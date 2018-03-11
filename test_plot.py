@@ -13,14 +13,14 @@ root.filename = filedialog.askopenfilename(initialdir="/home/arash/Projects/Upsc
                                            filetypes=(("text files", "*.txt"), ("all files", "*.*")))
 print(root.filename)
 
-T = TimeSeries()
+T = TimeSeriesSet()
 #T.time = np.arange(0.0, 2.0, 0.01)
 #T.value = 1 + np.sin(2*np.pi*T.time)
 
 
 T.readfromfile(root.filename)
 
-T.plot()
+T.plot("output.png")
 plt.xlabel('time (s)')
 plt.ylabel('voltage (mV)')
 plt.title('About as simple as it gets, folks')
