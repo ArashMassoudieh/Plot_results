@@ -7,9 +7,9 @@ import os
 
 from TimeSeries import TimeSeries
 from TimeSeriesSet import TimeSeriesSet
-os.chdir("/home/arash/Projects/UpscalingInputs")
+os.chdir("/home/arash/Projects/Upscaling_outputs")
 root = Tk()
-root.filename = filedialog.askopenfilename(initialdir="/home/arash/Projects/UpscalingInputs", title="Select file",
+root.filename = filedialog.askopenfilename(initialdir="/home/arash/Projects/Upscaling_outputs", title="Select file",
                                            filetypes=(("text files", "*.txt"), ("all files", "*.*")))
 print(root.filename)
 
@@ -21,9 +21,3 @@ T = TimeSeriesSet()
 T.readfromfile(root.filename)
 
 T.plot("output.png")
-plt.xlabel('time (s)')
-plt.ylabel('voltage (mV)')
-plt.title('About as simple as it gets, folks')
-plt.grid(True)
-plt.savefig("test.png")
-plt.show()

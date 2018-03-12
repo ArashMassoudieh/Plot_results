@@ -2,13 +2,16 @@ from TimeSeries import TimeSeries
 from typing import List
 import matplotlib.pyplot as plt
 import pandas as pd
+import numpy as np
 
 
 class TimeSeriesSet:
     Time_series = []
 
     def plot(self, filename, xtitle="", ytitle=""):
-        plt.plot(self.Time_series[0].time, self.Time_series[0].value)
+        for TS in self.Time_series:
+            if (TS.time.shape == TS.value.shape):
+                plt.plot(TS.time, TS.value)
         plt.xlabel(xtitle)
         plt.ylabel(ytitle)
         plt.grid(True)
@@ -16,16 +19,29 @@ class TimeSeriesSet:
         plt.show()
 
     def readfromfile(self, filename):
+        c = []
+        nvars = 0
         with open(filename, 'rt') as csvfile:
-            raw_data = pd.read_csv(csvfile, delimiter='\t')
-            s = raw_data.iloc[1:, :]
-            print(s.shape)
-            print(s.shape[0])
-            print(s.shape[1])
-            print(s)
-            for i in range(0, int(s.shape[1] / 2)):
-                print(i)
-                TS = TimeSeries();
-                TS.time = raw_data.iloc[1:, i * 2]
-                TS.values = raw_data.iloc[1:, i * 2 + 1]
-                self.Time_series.append(TS)
+            raw_data = pd.DataFrame()
+            eof = False
+            s = csvfile.readline()
+            s = csvfile.readline()
+            i = 0
+            while eof == False:
+                s = csvfile.readline()
+                print("s=", s)
+                if s == "":
+                    eof = True
+                    print("eof = ", eof)
+                else:
+                    c = s.split('\t')
+                    print("c=", c)
+                if (i == 0):
+                    nvars = int((len(c) - 1) / 2)
+                    print("nvars = ", nvars)
+                    for i in range(0, nvars):
+                        self.Time_series.append(TimeSeries())
+                for i in range(0, nvars):
+                    self.Time_series[i].time = np.append(self.Time_series[i].time, np.array(float(c[i * 2])))
+                    self.Time_series[i].value = np.append(self.Time_series[i].value, np.array(float(c[i * 2 + 1])))
+                i = i + 1
